@@ -1,0 +1,30 @@
+/* Chomper Game Specific Styles */
+
+.game-title {
+    color: var(--neon-yellow);
+}
+
+.game-wrapper {
+    border-color: var(--neon-yellow);
+    box-shadow: 
+        0 0 20px rgba(255, 255, 0, 0.3),
+        inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+#gameCanvas {
+    background: #000;
+}
+
+.overlay-content h2 {
+    color: var(--neon-yellow);
+}
+
+.control-btn:active {
+    background: linear-gradient(180deg, var(--neon-yellow), #886600);
+    border-color: var(--neon-yellow);
+}
+
+#lives {
+    color: var(--neon-yellow);
+}
+

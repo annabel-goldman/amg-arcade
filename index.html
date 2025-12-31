@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMG Arcade | Retro Gaming Paradise</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="crt-overlay"></div>
+    
+    <header class="arcade-header">
+        <div class="neon-sign">
+            <h1 class="title">
+                <span class="flicker">A</span>MG 
+                <span class="arcade-text">ARCADE</span>
+            </h1>
+        </div>
+        <p class="tagline">INSERT COIN TO PLAY</p>
+    </header>
+
+    <main class="game-cabinet">
+        <div class="marquee">
+            <span class="scroll-text">★ WELCOME TO AMG ARCADE ★ PLAY CLASSIC GAMES ★ HIGH SCORES ★ ENDLESS FUN ★ WELCOME TO AMG ARCADE ★ PLAY CLASSIC GAMES ★ HIGH SCORES ★ ENDLESS FUN ★</span>
+        </div>
+
+        <section class="game-grid">
+            <article class="game-card" data-game="snake">
+                <div class="game-screen">
+                    <div class="game-preview snake-preview">
+                        <div class="snake-demo"></div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h2>SNAKE</h2>
+                    <p>Eat. Grow. Survive.</p>
+                    <a href="games/snake/index.html" class="play-btn">
+                        <span class="btn-text">PLAY</span>
+                        <span class="btn-icon">▶</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="game-card" data-game="brick-breaker">
+                <div class="game-screen">
+                    <div class="game-preview breaker-preview">
+                        <div class="brick-demo"></div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h2>BRICK BREAKER</h2>
+                    <p>Smash them all!</p>
+                    <a href="games/brick-breaker/index.html" class="play-btn">
+                        <span class="btn-text">PLAY</span>
+                        <span class="btn-icon">▶</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="game-card" data-game="galaga">
+                <div class="game-screen">
+                    <div class="game-preview galaga-preview">
+                        <div class="ship-demo"></div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h2>STAR BLASTER</h2>
+                    <p>Defend the galaxy!</p>
+                    <a href="games/galaga/index.html" class="play-btn">
+                        <span class="btn-text">PLAY</span>
+                        <span class="btn-icon">▶</span>
+                    </a>
+                </div>
+            </article>
+
+            <article class="game-card" data-game="pacman">
+                <div class="game-screen">
+                    <div class="game-preview pacman-preview">
+                        <div class="pac-demo"></div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h2>CHOMPER</h2>
+                    <p>Wakka wakka!</p>
+                    <a href="games/pacman/index.html" class="play-btn">
+                        <span class="btn-text">PLAY</span>
+                        <span class="btn-icon">▶</span>
+                    </a>
+                </div>
+            </article>
+        </section>
+
+        <section class="controls-info">
+            <h3>HOW TO PLAY</h3>
+            <div class="control-keys">
+                <div class="key-group">
+                    <div class="key arrow">↑</div>
+                    <div class="key-row">
+                        <div class="key arrow">←</div>
+                        <div class="key arrow">↓</div>
+                        <div class="key arrow">→</div>
+                    </div>
+                </div>
+                <span class="or-text">OR</span>
+                <div class="key-group wasd">
+                    <div class="key">W</div>
+                    <div class="key-row">
+                        <div class="key">A</div>
+                        <div class="key">S</div>
+                        <div class="key">D</div>
+                    </div>
+                </div>
+            </div>
+            <p class="space-info">Press <span class="key space">SPACE</span> to pause</p>
+        </section>
+    </main>
+
+    <footer class="arcade-footer">
+        <div class="footer-lights">
+            <span class="light"></span>
+            <span class="light"></span>
+            <span class="light"></span>
+            <span class="light"></span>
+            <span class="light"></span>
+        </div>
+        <p>© 2024 AMG ARCADE | ALL RIGHTS RESERVED</p>
+        <p class="credits">CRAFTED WITH ♥ FOR RETRO GAMERS</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+

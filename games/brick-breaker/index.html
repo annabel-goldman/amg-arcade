@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICK BREAKER | AMG Arcade</title>
+    <link rel="stylesheet" href="../../styles/game-common.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scanlines"></div>
+    
+    <div class="game-container">
+        <header class="game-header">
+            <a href="../../index.html" class="back-btn">← BACK</a>
+            <h1 class="game-title">BRICK BREAKER</h1>
+            <div class="score-display">
+                <span class="label">SCORE</span>
+                <span class="score" id="score">0</span>
+            </div>
+        </header>
+
+        <div class="game-wrapper">
+            <canvas id="gameCanvas" width="480" height="400"></canvas>
+            
+            <div class="game-overlay" id="startScreen">
+                <div class="overlay-content">
+                    <h2>BRICK BREAKER</h2>
+                    <p>Move paddle with arrow keys or mouse</p>
+                    <p>Break all the bricks!</p>
+                    <p>Don't let the ball fall!</p>
+                    <button class="start-btn" id="startBtn">START GAME</button>
+                </div>
+            </div>
+
+            <div class="game-overlay hidden" id="gameOverScreen">
+                <div class="overlay-content">
+                    <h2>GAME OVER</h2>
+                    <p>Final Score: <span id="finalScore">0</span></p>
+                    <p class="high-score">High Score: <span id="highScore">0</span></p>
+                    <button class="start-btn" id="restartBtn">PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <div class="game-overlay hidden" id="winScreen">
+                <div class="overlay-content">
+                    <h2>LEVEL CLEAR!</h2>
+                    <p>Score: <span id="levelScore">0</span></p>
+                    <button class="start-btn" id="nextLevelBtn">NEXT LEVEL</button>
+                </div>
+            </div>
+
+            <div class="game-overlay hidden" id="pauseScreen">
+                <div class="overlay-content">
+                    <h2>PAUSED</h2>
+                    <p>Press SPACE to resume</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <div class="paddle-controls">
+                <button class="control-btn wide" data-dir="left">◄ LEFT</button>
+                <button class="control-btn wide" data-dir="right">RIGHT ►</button>
+            </div>
+        </div>
+
+        <footer class="game-footer">
+            <div class="stats">
+                <span>LEVEL: <span id="level">1</span></span>
+                <span>LIVES: <span id="lives">♥♥♥</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
+

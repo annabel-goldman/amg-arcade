@@ -1,0 +1,101 @@
+/* Star Blaster Game Specific Styles */
+
+.game-title {
+    color: var(--neon-cyan);
+}
+
+.game-wrapper {
+    border-color: var(--neon-cyan);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 255, 0.3),
+        inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+#gameCanvas {
+    background: radial-gradient(ellipse at center, #0a0a2a 0%, #000010 100%);
+}
+
+.overlay-content h2 {
+    color: var(--neon-cyan);
+}
+
+/* Ship controls for mobile */
+.ship-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn.wide {
+    width: 70px;
+}
+
+.control-btn.fire {
+    width: 90px;
+    height: 65px;
+    background: linear-gradient(180deg, var(--neon-red), #660020);
+    border-color: var(--neon-red);
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    box-shadow: 
+        0 4px 0 #440010,
+        0 0 15px rgba(255, 0, 64, 0.3);
+}
+
+.control-btn.fire:active {
+    background: linear-gradient(180deg, #ff4060, var(--neon-red));
+    box-shadow: 0 1px 0 #440010, 0 0 25px var(--neon-red);
+}
+
+.control-btn:active {
+    background: linear-gradient(180deg, var(--neon-cyan), #006688);
+    border-color: var(--neon-cyan);
+}
+
+#lives {
+    color: var(--neon-cyan);
+}
+
+#waveScreen {
+    animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .ship-controls {
+        gap: 0.5rem;
+    }
+    
+    .control-btn.wide {
+        width: 60px;
+        height: 58px;
+    }
+    
+    .control-btn.fire {
+        width: 80px;
+        height: 58px;
+        font-size: 0.45rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .control-btn.wide {
+        width: 52px;
+        height: 52px;
+    }
+    
+    .control-btn.fire {
+        width: 70px;
+        height: 52px;
+        font-size: 0.4rem;
+    }
+}
