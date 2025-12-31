@@ -505,100 +505,12 @@ class BrickBreakerGame {
     }
     
     hideAllOverlays() {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('gameOverScreen').classList.add('hidden');
-        document.getElementById('winScreen').classList.add('hidden');
-        document.getElementById('pauseScreen').classList.add('hidden');
+        GameUI.hideAllOverlays();
     }
     
     playSound(type) {
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            switch (type) {
-                case 'paddle':
-                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.1);
-                    break;
-                    
-                case 'wall':
-                    oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.05);
-                    break;
-                    
-                case 'break':
-                    oscillator.type = 'square';
-                    oscillator.frequency.setValueAtTime(587.33, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(880, audioContext.currentTime + 0.05);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.1);
-                    break;
-                    
-                case 'hit':
-                    oscillator.frequency.setValueAtTime(330, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.05);
-                    break;
-                    
-                case 'lose':
-                    oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.3);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                    break;
-                    
-                case 'win':
-                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.15);
-                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.3);
-                    oscillator.frequency.setValueAtTime(1046.5, audioContext.currentTime + 0.45);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.6);
-                    break;
-                    
-                case 'gameover':
-                    oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.5);
-                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.5);
-                    break;
-                    
-                case 'start':
-                case 'launch':
-                    oscillator.frequency.setValueAtTime(262, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(330, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(392, audioContext.currentTime + 0.2);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                    break;
-            }
-        } catch (e) {
-            // Audio not supported
+        if (typeof arcadeAudio !== 'undefined') {
+            arcadeAudio.play(type);
         }
     }
 }

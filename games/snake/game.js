@@ -1,8 +1,9 @@
 // Snake Game - AMG Arcade
-class SnakeGame {
+// Uses shared utilities from js/audio.js and js/game-utils.js
+
+class SnakeGame extends ArcadeGame {
     constructor() {
-        this.canvas = document.getElementById('gameCanvas');
-        this.ctx = this.canvas.getContext('2d');
+        super('gameCanvas', 'snake');
         
         this.gridSize = 20;
         this.tileCount = this.canvas.width / this.gridSize;
@@ -12,14 +13,9 @@ class SnakeGame {
         this.direction = { x: 1, y: 0 };
         this.nextDirection = { x: 1, y: 0 };
         
-        this.score = 0;
-        this.highScore = parseInt(localStorage.getItem('snake_highscore')) || 0;
         this.speed = 1;
         this.baseInterval = 150;
         this.gameInterval = null;
-        
-        this.isPlaying = false;
-        this.isPaused = false;
         
         this.colors = {
             snake: '#39ff14',
@@ -33,43 +29,22 @@ class SnakeGame {
     }
     
     init() {
-        this.bindEvents();
-        this.updateHighScoreDisplay();
+        super.init();
+        this.input.setupMobileControls((action, pressed) => {
+            if (pressed) this.handleMobileControl(action);
+        });
         
-        // Draw initial state
+        document.addEventListener('keydown', (e) => this.handleKeydown(e));
         this.drawBackground();
     }
     
-    bindEvents() {
-        // Keyboard controls
-        document.addEventListener('keydown', (e) => this.handleKeydown(e));
-        
-        // Button controls
-        document.getElementById('startBtn').addEventListener('click', () => this.startGame());
-        document.getElementById('restartBtn').addEventListener('click', () => this.startGame());
-        
-        // Mobile controls
-        document.querySelectorAll('.control-btn').forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.handleMobileControl(btn.dataset.dir);
-            });
-            btn.addEventListener('click', () => {
-                this.handleMobileControl(btn.dataset.dir);
-            });
-        });
-    }
-    
     handleKeydown(e) {
-        // Prevent default for arrow keys
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
             e.preventDefault();
         }
         
         if (e.code === 'Space') {
-            if (this.isPlaying) {
-                this.togglePause();
-            }
+            if (this.isPlaying) this.togglePause();
             return;
         }
         
@@ -124,15 +99,14 @@ class SnakeGame {
         this.speed = 1;
         
         this.updateScore();
+        this.updateStats();
         this.spawnFood();
         
-        // Hide overlays
-        this.hideAllOverlays();
+        GameUI.hideAllOverlays();
         
         this.isPlaying = true;
         this.isPaused = false;
         
-        // Start game loop
         if (this.gameInterval) clearInterval(this.gameInterval);
         this.gameInterval = setInterval(() => this.gameLoop(), this.baseInterval);
         
@@ -144,26 +118,21 @@ class SnakeGame {
         
         this.direction = { ...this.nextDirection };
         
-        // Calculate new head position
         const head = {
             x: this.snake[0].x + this.direction.x,
             y: this.snake[0].y + this.direction.y
         };
         
-        // Check collisions
         if (this.checkCollision(head)) {
             this.gameOver();
             return;
         }
         
-        // Add new head
         this.snake.unshift(head);
         
-        // Check if eating food
         if (head.x === this.food.x && head.y === this.food.y) {
             this.eatFood();
         } else {
-            // Remove tail if not eating
             this.snake.pop();
         }
         
@@ -176,7 +145,7 @@ class SnakeGame {
             return true;
         }
         
-        // Self collision (skip head)
+        // Self collision
         for (let i = 0; i < this.snake.length; i++) {
             if (head.x === this.snake[i].x && head.y === this.snake[i].y) {
                 return true;
@@ -192,10 +161,11 @@ class SnakeGame {
         this.spawnFood();
         this.playSound('eat');
         
-        // Increase speed every 50 points
         if (this.score % 50 === 0) {
             this.increaseSpeed();
         }
+        
+        this.updateStats();
     }
     
     spawnFood() {
@@ -208,7 +178,6 @@ class SnakeGame {
                 y: Math.floor(Math.random() * this.tileCount)
             };
             
-            // Make sure food doesn't spawn on snake
             validPosition = !this.snake.some(segment => 
                 segment.x === newFood.x && segment.y === newFood.y
             );
@@ -219,38 +188,32 @@ class SnakeGame {
     
     increaseSpeed() {
         this.speed++;
-        document.getElementById('speed').textContent = this.speed;
         
         clearInterval(this.gameInterval);
         const newInterval = Math.max(50, this.baseInterval - (this.speed - 1) * 15);
         this.gameInterval = setInterval(() => this.gameLoop(), newInterval);
         
         this.playSound('levelup');
+        this.updateStats();
     }
     
-    togglePause() {
-        this.isPaused = !this.isPaused;
-        
-        if (this.isPaused) {
-            document.getElementById('pauseScreen').classList.remove('hidden');
-        } else {
-            document.getElementById('pauseScreen').classList.add('hidden');
-        }
+    updateStats() {
+        GameUI.updateText('length', this.snake.length);
+        GameUI.updateText('speed', this.speed);
     }
     
     gameOver() {
         this.isPlaying = false;
         clearInterval(this.gameInterval);
         
-        // Update high score
-        if (this.score > this.highScore) {
+        const isNewHighScore = HighScores.set(this.gameId, this.score);
+        if (isNewHighScore) {
             this.highScore = this.score;
-            localStorage.setItem('snake_highscore', this.highScore);
         }
         
-        document.getElementById('finalScore').textContent = this.score;
-        document.getElementById('highScore').textContent = this.highScore;
-        document.getElementById('gameOverScreen').classList.remove('hidden');
+        GameUI.updateText('finalScore', this.score);
+        GameUI.updateHighScore(this.highScore);
+        GameUI.showOverlay('gameOverScreen');
         
         this.playSound('gameover');
     }
@@ -262,7 +225,6 @@ class SnakeGame {
     }
     
     drawBackground() {
-        // Dark green background
         this.ctx.fillStyle = '#0a1a0a';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -289,155 +251,58 @@ class SnakeGame {
             const x = segment.x * this.gridSize;
             const y = segment.y * this.gridSize;
             
-            // Glow effect
-            this.ctx.shadowColor = this.colors.snakeGlow;
-            this.ctx.shadowBlur = 10;
+            Draw.glow(this.ctx, this.colors.snakeGlow, 10);
             
-            // Gradient from head to tail
             const brightness = 1 - (index / this.snake.length) * 0.5;
             const green = Math.floor(255 * brightness);
             this.ctx.fillStyle = `rgb(${Math.floor(57 * brightness)}, ${green}, ${Math.floor(20 * brightness)})`;
             
             if (index === 0) {
-                // Head is brighter
                 this.ctx.fillStyle = this.colors.snakeHead;
             }
             
-            // Draw segment with slight padding
             const padding = 1;
-            this.ctx.fillRect(
-                x + padding, 
-                y + padding, 
-                this.gridSize - padding * 2, 
-                this.gridSize - padding * 2
-            );
+            this.ctx.fillRect(x + padding, y + padding, this.gridSize - padding * 2, this.gridSize - padding * 2);
             
-            // Draw eyes on head
+            // Eyes on head
             if (index === 0) {
-                this.ctx.shadowBlur = 0;
+                Draw.noGlow(this.ctx);
                 this.ctx.fillStyle = '#000';
                 
                 const eyeSize = 4;
-                const eyeOffset = 5;
                 
                 if (this.direction.x === 1) {
-                    // Facing right
                     this.ctx.fillRect(x + 12, y + 4, eyeSize, eyeSize);
                     this.ctx.fillRect(x + 12, y + 12, eyeSize, eyeSize);
                 } else if (this.direction.x === -1) {
-                    // Facing left
                     this.ctx.fillRect(x + 4, y + 4, eyeSize, eyeSize);
                     this.ctx.fillRect(x + 4, y + 12, eyeSize, eyeSize);
                 } else if (this.direction.y === -1) {
-                    // Facing up
                     this.ctx.fillRect(x + 4, y + 4, eyeSize, eyeSize);
                     this.ctx.fillRect(x + 12, y + 4, eyeSize, eyeSize);
                 } else {
-                    // Facing down
                     this.ctx.fillRect(x + 4, y + 12, eyeSize, eyeSize);
                     this.ctx.fillRect(x + 12, y + 12, eyeSize, eyeSize);
                 }
             }
         });
         
-        this.ctx.shadowBlur = 0;
+        Draw.noGlow(this.ctx);
     }
     
     drawFood() {
         const x = this.food.x * this.gridSize;
         const y = this.food.y * this.gridSize;
         
-        // Pulsing glow effect
         const pulse = Math.sin(Date.now() / 200) * 5 + 15;
-        this.ctx.shadowColor = this.colors.foodGlow;
-        this.ctx.shadowBlur = pulse;
+        Draw.glow(this.ctx, this.colors.foodGlow, pulse);
         
         this.ctx.fillStyle = this.colors.food;
-        
-        // Draw as circle (apple)
         this.ctx.beginPath();
-        this.ctx.arc(
-            x + this.gridSize / 2,
-            y + this.gridSize / 2,
-            this.gridSize / 2 - 2,
-            0,
-            Math.PI * 2
-        );
+        this.ctx.arc(x + this.gridSize / 2, y + this.gridSize / 2, this.gridSize / 2 - 2, 0, Math.PI * 2);
         this.ctx.fill();
         
-        this.ctx.shadowBlur = 0;
-    }
-    
-    updateScore() {
-        document.getElementById('score').textContent = this.score;
-        document.getElementById('length').textContent = this.snake.length;
-    }
-    
-    updateHighScoreDisplay() {
-        document.getElementById('highScore').textContent = this.highScore;
-    }
-    
-    hideAllOverlays() {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('gameOverScreen').classList.add('hidden');
-        document.getElementById('pauseScreen').classList.add('hidden');
-    }
-    
-    playSound(type) {
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            switch (type) {
-                case 'eat':
-                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.05);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.1);
-                    break;
-                    
-                case 'gameover':
-                    oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.5);
-                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.5);
-                    break;
-                    
-                case 'start':
-                    oscillator.frequency.setValueAtTime(262, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(330, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(392, audioContext.currentTime + 0.2);
-                    oscillator.frequency.setValueAtTime(523, audioContext.currentTime + 0.3);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.4);
-                    break;
-                    
-                case 'levelup':
-                    oscillator.type = 'square';
-                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(554.37, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.2);
-                    oscillator.frequency.setValueAtTime(880, audioContext.currentTime + 0.3);
-                    gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.4);
-                    break;
-            }
-        } catch (e) {
-            // Audio not supported
-        }
+        Draw.noGlow(this.ctx);
     }
 }
 
@@ -445,4 +310,3 @@ class SnakeGame {
 document.addEventListener('DOMContentLoaded', () => {
     new SnakeGame();
 });
-

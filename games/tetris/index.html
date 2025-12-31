@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STAR BLASTER | AMG Arcade</title>
+    <title>BLOCK DROP | AMG Arcade</title>
     <link rel="stylesheet" href="../../styles/game-common.css">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
     <div class="game-container">
         <header class="game-header">
             <a href="../../index.html" class="back-btn">← BACK</a>
-            <h1 class="game-title">STAR BLASTER</h1>
+            <h1 class="game-title">BLOCK DROP</h1>
             <div class="score-display">
                 <span class="label">SCORE</span>
                 <span class="score" id="score">0</span>
@@ -24,14 +24,15 @@
         </header>
 
         <div class="game-wrapper">
-            <canvas id="gameCanvas" width="400" height="500"></canvas>
+            <canvas id="gameCanvas" width="300" height="600"></canvas>
             
             <div class="game-overlay" id="startScreen">
                 <div class="overlay-content">
-                    <h2>STAR BLASTER</h2>
-                    <p>Use arrow keys or A/D to move</p>
-                    <p>Press SPACE to fire</p>
-                    <p>Destroy all enemies!</p>
+                    <h2>BLOCK DROP</h2>
+                    <p>Use arrow keys to move & rotate</p>
+                    <p>DOWN to soft drop</p>
+                    <p>SPACE for hard drop</p>
+                    <p>Clear lines to score!</p>
                     <button class="start-btn" id="startBtn">START GAME</button>
                 </div>
             </div>
@@ -40,38 +41,33 @@
                 <div class="overlay-content">
                     <h2>GAME OVER</h2>
                     <p>Final Score: <span id="finalScore">0</span></p>
+                    <p>Lines: <span id="finalLines">0</span></p>
                     <p class="high-score">High Score: <span id="highScore">0</span></p>
                     <button class="start-btn" id="restartBtn">PLAY AGAIN</button>
-                </div>
-            </div>
-
-            <div class="game-overlay hidden" id="waveScreen">
-                <div class="overlay-content">
-                    <h2 id="waveText">WAVE 1</h2>
-                    <p>GET READY!</p>
                 </div>
             </div>
 
             <div class="game-overlay hidden" id="pauseScreen">
                 <div class="overlay-content">
                     <h2>PAUSED</h2>
-                    <p>Press SPACE to resume</p>
+                    <p>Press P to resume</p>
                 </div>
             </div>
         </div>
 
         <div class="game-controls">
-            <div class="ship-controls">
-                <button class="control-btn wide" data-dir="left">◄</button>
-                <button class="control-btn fire" data-action="fire">FIRE</button>
-                <button class="control-btn wide" data-dir="right">►</button>
+            <div class="tetris-controls">
+                <button class="control-btn" data-action="left">◄</button>
+                <button class="control-btn" data-action="rotate">↻</button>
+                <button class="control-btn" data-action="right">►</button>
+                <button class="control-btn" data-action="down">▼</button>
             </div>
         </div>
 
         <footer class="game-footer">
             <div class="stats">
-                <span>WAVE: <span id="wave">1</span></span>
-                <span>LIVES: <span id="lives">♦♦♦</span></span>
+                <span>LEVEL: <span id="level">1</span></span>
+                <span>LINES: <span id="lines">0</span></span>
             </div>
         </footer>
     </div>

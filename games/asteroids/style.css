@@ -1,0 +1,62 @@
+/* Asteroids Game Specific Styles */
+
+.game-title {
+    color: #ffffff;
+}
+
+.game-wrapper {
+    border-color: #888888;
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.2),
+        inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+#gameCanvas {
+    background: #000;
+}
+
+.overlay-content h2 {
+    color: #ffffff;
+}
+
+.asteroid-controls {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-btn.fire {
+    width: 80px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    background: linear-gradient(180deg, var(--neon-red), #660020);
+    border-color: var(--neon-red);
+}
+
+.control-btn:active {
+    background: linear-gradient(180deg, #ffffff, #888888);
+    border-color: #ffffff;
+}
+
+.control-btn.fire:active {
+    background: linear-gradient(180deg, #ff4060, var(--neon-red));
+    box-shadow: 0 0 15px var(--neon-red);
+}
+
+#lives {
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+}
+
+@media (max-width: 480px) {
+    .asteroid-controls {
+        gap: 0.4rem;
+    }
+    
+    .control-btn.fire {
+        width: 70px;
+        font-size: 0.4rem;
+    }
+}
+

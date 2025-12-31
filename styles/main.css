@@ -250,6 +250,11 @@ body {
 .game-card[data-game="brick-breaker"]:hover { --glow-color: var(--neon-orange); }
 .game-card[data-game="galaga"]:hover { --glow-color: var(--neon-cyan); }
 .game-card[data-game="pacman"]:hover { --glow-color: var(--neon-yellow); }
+.game-card[data-game="tetris"]:hover { --glow-color: var(--neon-pink); }
+.game-card[data-game="pong"]:hover { --glow-color: #ffffff; }
+.game-card[data-game="asteroids"]:hover { --glow-color: #ffffff; }
+.game-card[data-game="frogger"]:hover { --glow-color: var(--neon-green); }
+.game-card[data-game="runner"]:hover { --glow-color: #ff6b6b; }
 
 .game-card:hover::before {
     box-shadow: 0 0 20px var(--glow-color, var(--neon-pink));
@@ -504,6 +509,241 @@ body {
 @keyframes pac-mouth {
     0%, 100% { clip-path: polygon(0 0, 100% 50%, 0 100%); }
     50% { clip-path: polygon(0 20%, 100% 50%, 0 80%); }
+}
+
+/* Tetris Preview */
+.tetris-preview {
+    background: linear-gradient(135deg, #1a0a2a, #2a1040);
+}
+
+.tetris-demo {
+    width: 70%;
+    height: 70%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 2px;
+    position: relative;
+}
+
+.tetris-demo::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg, transparent 0%, transparent 16%, var(--neon-cyan) 16%, var(--neon-cyan) 32%, transparent 32%),
+        linear-gradient(90deg, transparent 32%, var(--neon-cyan) 32%, var(--neon-cyan) 48%, transparent 48%) 0 20%,
+        linear-gradient(90deg, var(--neon-yellow) 0%, var(--neon-yellow) 32%, transparent 32%) 0 40%,
+        linear-gradient(90deg, var(--neon-pink) 16%, var(--neon-pink) 48%, transparent 48%) 0 60%,
+        linear-gradient(90deg, var(--neon-green) 0%, var(--neon-green) 64%, transparent 64%) 0 80%;
+    background-size: 100% 20%;
+    background-repeat: no-repeat;
+    animation: tetris-fall 2s ease-in-out infinite;
+}
+
+@keyframes tetris-fall {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Pong Preview */
+.pong-preview {
+    background: #000;
+}
+
+.pong-demo {
+    width: 80%;
+    height: 80%;
+    position: relative;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+.pong-demo::before {
+    content: '';
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 40px;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    animation: pong-paddle-left 1.5s ease-in-out infinite;
+}
+
+.pong-demo::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 40px;
+    background: var(--neon-red);
+    box-shadow: 0 0 10px var(--neon-red);
+    animation: pong-paddle-right 1.5s ease-in-out infinite;
+}
+
+@keyframes pong-paddle-left {
+    0%, 100% { top: 30%; }
+    50% { top: 70%; }
+}
+
+@keyframes pong-paddle-right {
+    0%, 100% { top: 60%; }
+    50% { top: 40%; }
+}
+
+/* Asteroids Preview */
+.asteroids-preview {
+    background: radial-gradient(ellipse at center, #0a0a1a, #000);
+}
+
+.asteroids-demo {
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 24px solid #ffffff;
+    position: relative;
+    animation: asteroid-ship 3s linear infinite;
+    filter: drop-shadow(0 0 8px #ffffff);
+}
+
+.asteroids-demo::before {
+    content: '◇';
+    position: absolute;
+    top: 30px;
+    left: -40px;
+    color: #888;
+    font-size: 2rem;
+    animation: asteroid-float 2s ease-in-out infinite;
+}
+
+.asteroids-demo::after {
+    content: '◇';
+    position: absolute;
+    top: -50px;
+    right: -60px;
+    color: #aaa;
+    font-size: 1.5rem;
+    animation: asteroid-float 2.5s ease-in-out infinite reverse;
+}
+
+@keyframes asteroid-ship {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+
+@keyframes asteroid-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(180deg); }
+}
+
+/* Frogger Preview */
+.frogger-preview {
+    background: linear-gradient(180deg, #0a0a4a 0%, #0a0a4a 40%, #1a1a1a 40%, #1a1a1a 70%, #2a1a4a 70%);
+}
+
+.frogger-demo {
+    width: 30px;
+    height: 30px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    position: relative;
+    animation: frog-hop 1s ease-in-out infinite;
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.frogger-demo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -60px;
+    width: 40px;
+    height: 15px;
+    background: var(--neon-red);
+    box-shadow: 0 0 8px var(--neon-red);
+    animation: car-move 1.5s linear infinite;
+}
+
+.frogger-demo::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: -30px;
+    width: 50px;
+    height: 12px;
+    background: #8B4513;
+    animation: log-move 2s linear infinite;
+}
+
+@keyframes frog-hop {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes car-move {
+    0% { left: -60px; }
+    100% { left: 100px; }
+}
+
+@keyframes log-move {
+    0% { left: -80px; }
+    100% { left: 60px; }
+}
+
+/* Space Invaders Preview */
+/* Runner Preview Animation */
+.runner-preview {
+    background: linear-gradient(180deg, #0a0a20 0%, #2a1a50 100%);
+    overflow: hidden;
+}
+
+.runner-demo {
+    width: 20px;
+    height: 30px;
+    background: #ff6b6b;
+    position: absolute;
+    bottom: 25%;
+    left: 25%;
+    border-radius: 50% 50% 0 0;
+    box-shadow: 0 0 15px #ff6b6b;
+    animation: runner-jump 1s ease-in-out infinite;
+}
+
+.runner-demo::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: -30px;
+    width: 100px;
+    height: 20px;
+    background: #3a2a1a;
+}
+
+.runner-demo::after {
+    content: '▲';
+    position: absolute;
+    bottom: -3px;
+    left: 40px;
+    color: #2d5a2d;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px #4a8a4a;
+    animation: runner-obstacle 1.5s linear infinite;
+}
+
+@keyframes runner-jump {
+    0%, 100% { transform: translateY(0); }
+    40%, 60% { transform: translateY(-30px); }
+}
+
+@keyframes runner-obstacle {
+    0% { transform: translateX(80px); opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateX(-20px); opacity: 0; }
 }
 
 /* Game Info */

@@ -1,0 +1,58 @@
+/* Runner Game Specific Styles */
+
+.game-wrapper {
+    position: relative;
+}
+
+#gameCanvas {
+    background: linear-gradient(180deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+/* Jump button for mobile */
+.jump-btn {
+    width: 100%;
+    max-width: 200px;
+    height: 80px;
+    font-size: 1.2rem;
+    background: linear-gradient(180deg, #ff6b6b, #ee5a5a);
+    border: 3px solid #ff8787;
+    box-shadow: 
+        0 6px 0 #cc4444,
+        0 0 20px rgba(255, 107, 107, 0.5);
+}
+
+.jump-btn:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #cc4444,
+        0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.mobile-controls {
+    justify-content: center;
+}
+
+/* Stats styling */
+.game-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--neon-cyan);
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1rem;
+    color: #fff;
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+

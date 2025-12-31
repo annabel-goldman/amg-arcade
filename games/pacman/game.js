@@ -6,7 +6,7 @@ class ChomperGame {
         
         this.tileSize = 20;
         this.cols = 21;
-        this.rows = 23;
+        this.rows = 22;
         
         // Maze layout: 0=wall, 1=dot, 2=empty, 3=power pellet, 4=ghost house
         this.mazeTemplate = [
@@ -694,95 +694,12 @@ class ChomperGame {
     }
     
     hideAllOverlays() {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('gameOverScreen').classList.add('hidden');
-        document.getElementById('winScreen').classList.add('hidden');
-        document.getElementById('pauseScreen').classList.add('hidden');
+        GameUI.hideAllOverlays();
     }
     
     playSound(type) {
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            switch (type) {
-                case 'eat':
-                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(500, audioContext.currentTime + 0.05);
-                    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.05);
-                    break;
-                    
-                case 'power':
-                    oscillator.type = 'square';
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.3);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                    break;
-                    
-                case 'eatghost':
-                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(900, audioContext.currentTime + 0.2);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                    break;
-                    
-                case 'death':
-                    oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(500, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.5);
-                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.5);
-                    break;
-                    
-                case 'start':
-                    oscillator.frequency.setValueAtTime(262, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(330, audioContext.currentTime + 0.15);
-                    oscillator.frequency.setValueAtTime(392, audioContext.currentTime + 0.3);
-                    oscillator.frequency.setValueAtTime(523, audioContext.currentTime + 0.45);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.6);
-                    break;
-                    
-                case 'win':
-                    oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.15);
-                    oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.3);
-                    oscillator.frequency.setValueAtTime(1047, audioContext.currentTime + 0.45);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.6);
-                    break;
-                    
-                case 'gameover':
-                    oscillator.type = 'sawtooth';
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.8);
-                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.8);
-                    break;
-            }
-        } catch (e) {
-            // Audio not supported
+        if (typeof arcadeAudio !== 'undefined') {
+            arcadeAudio.play(type);
         }
     }
 }
